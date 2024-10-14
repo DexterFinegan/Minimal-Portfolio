@@ -1,0 +1,61 @@
+body {
+    background-color : black;
+    margin : 0;
+}
+
+#modalEl {
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    inset: 0px;
+}
+
+#modalBox {
+    background-color: white;
+    max-width: 28rem;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: center;
+
+}
+
+#bigScoreEl {
+    font : bold;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+p {
+    color: rgb(55 65 81);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+#startGameBtn {
+    background-color: rgb(59 130 246);
+    color: rgb(255 255 255);
+    width : 100%;
+    padding-top: 0.75rem; 
+    padding-bottom: 0.75rem; 
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+#scoreBox {
+    position: fixed;
+    color: rgb(255 255 255);
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+    margin-top: 0.25rem;
+    user-select: none;
+}
+
+/* first one : class="fixed inset-0 flex items-center justify-center" */
+/* second one : class="bg-white max-w-md w-full p-6 text-center"*/
+/* h1 : class="text-4xl font-bold leading-none" */
+/* p : class="text-sm text-gray-700 mb-4"*/
+/* button : class="bg-blue-500 text-white w-full py-3 rounded-full text-sm" */
+
+/* real first one : class="fixed text-white text-sm ml-2 mt-1 select-none"*/

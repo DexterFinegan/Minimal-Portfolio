@@ -236,3 +236,10 @@ startGameBtn.addEventListener("click", () => {
     spawnEnemies()
     modlaEl.style.display = "none"
 })
+
+startGameBtn.addEventListener("touchstart", () => {
+    init()
+    animate()
+    spawnEnemies()
+    modlaEl.style.display = "none"
+})
