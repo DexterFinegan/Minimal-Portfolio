@@ -6,7 +6,7 @@ canvas.height = innerHeight
 
 const scoreEl = document.querySelector("#scoreEl")
 const startGameBtn = document.querySelector("#startGameBtn")
-const modlaEl = document.querySelector("#modalEl")
+const modalEl = document.querySelector("#modalEl")
 const bigScoreEl = document.querySelector("#bigScoreEl")
 
 class Player {
@@ -234,12 +234,12 @@ startGameBtn.addEventListener("click", () => {
     init()
     animate()
     spawnEnemies()
-    modlaEl.style.display = "none"
+    modalEl.style.display = "none"
 })
 
 startGameBtn.addEventListener("touchstart", () => {
     init()
     animate()
     spawnEnemies()
-    modlaEl.style.display = "none"
+    modalEl.style.display = "none"
 })

@@ -111,3 +111,5 @@ function restartGame(){
     placeFood();
     console.log("Game Restarted");
 }
+
+/* This works */
