@@ -173,7 +173,7 @@ function animate(){
         const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y)
         if (dist -enemy.radius - player.radius < 1) {
             cancelAnimationFrame(animationID)
-            modlaEl.style.display = "flex"
+            modalEl.style.display = "flex"
             bigScoreEl.innerHTML = score
         }
 
@@ -224,6 +224,7 @@ addEventListener("click", (event) => {
     projectiles.push(new Projectile(canvas.width / 2, canvas.height /2, 5, "white", velocity))
 })
 
+/* Touch Screen devices in progress */
 addEventListener("touchstart", (event) => {
     const angle = Math.atan2(event.clientY - canvas.height/2, event.clientX - canvas.width/2)
     const velocity = {x : Math.cos(angle) * 4, y : Math.sin(angle) * 4}
@@ -237,6 +238,7 @@ startGameBtn.addEventListener("click", () => {
     modalEl.style.display = "none"
 })
 
+/* Touch Screen devices in progress */
 startGameBtn.addEventListener("touchstart", () => {
     init()
     animate()
