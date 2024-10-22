@@ -20,8 +20,8 @@ socket.on("updatePlayers", (backEndPlayers) => {
   }
 })
 
-document.querySelector("#usernameForm").addEventListener("submit", (event) => {
-  event.preventDefault()
-  document.querySelector("#usernameForm").style.display = "none"
-  socket.emit("initGame", {username : document.querySelector("#usernameInput").value})
-})
+// document.querySelector("#usernameForm").addEventListener("submit", (event) => {
+//   event.preventDefault()
+//   document.querySelector("#usernameForm").style.display = "none"
+//   socket.emit("initGame", {username : document.querySelector("#usernameInput").value})
+// })
