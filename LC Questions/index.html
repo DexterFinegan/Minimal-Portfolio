@@ -2,54 +2,30 @@
 <html>
     <head>
         <link rel="stylesheet" href="styles.css">
+        <script src="script.js" defer></script>
     </head>
     <body>
-        <!-- Header -->
-         <div id="Header">
-            <img src="Assets/icon.png">
-            
-            <!-- Nav Bar -->
-            <div class="navbar">
-                <a href="../index.html">Home</a>
-    
-                <!-- Dropdown Menu -->
-                <div class="dropdown">
-                    <button class="dropbtn">Year
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="#">Any Year</a>
-                        <a href="#">2024</a>
+        <!-- Nav Bar -->
+        <div class="navbar">
+            <div class="home">Home</div>
+            <input type="search" id="search-bar" data-search>
+            <div class="sign-up">Sign Up</div>
+        </div>
+         
+        <div class="window">
+            <!-- Filter Box -->
+            <div class="filter-container">
+                Filters
+            </div>
+            <!-- Div containing LC Question -->
+            <div class="question-container">   
+                <div class="question" data-question-card-container></div>
+                <template data-question-template>
+                    <div class="question">
+                        <img src="Question Images/0002.png", class="question-image" question-image>
                     </div>
-                </div>
-    
-                <div class="dropdown">
-                    <button class="dropbtn">Paper
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="#">Any Paper</a>
-                        <a href="#">Paper 1</a>
-                    </div>
-                </div>
-    
-                <div class="dropdown">
-                    <button class="dropbtn">Level
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="#">Any Level</a>
-                        <a href="#">Higher Level</a>
-                    </div>
-                </div>
-             </div>
-         </div>
-        
-
-        <!-- Div containing LC Question -->
-        <div class="question-container">   
-            <!-- Actual Image of Question -->
-            <img src="Question Images/0002.png", class="question-image">
+                </template>
+            </div>
         </div>
     </body>
 </html>
