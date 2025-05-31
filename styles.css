@@ -1,8 +1,3 @@
-* {
-    box-sizing: border-box;
-    text-overflow: break-word;
-    word-wrap: break-word;
-}
 
 h1 {
     font-weight: bold;
@@ -77,8 +72,13 @@ body {
 p {
     margin-top: 10px;
     padding: 0px 10% 0px 10%;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     max-width: 100%;
+}
+
+li {
+    font-size: 1.5rem;
+    max-width: 100%
 }
 
 h2 {
@@ -187,7 +187,6 @@ h2:hover {
 .user-heatmap {
     display: inline;
     max-height: 150px;
-    width: auto;
 }
 
 .title {
@@ -208,6 +207,11 @@ h2:hover {
     color: #fef4b1;
     transition-duration: 0.1s;
     box-shadow: 5px 5px 10px black;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .return:hover {
@@ -245,6 +249,9 @@ h2:hover {
         font-size: 2rem;
     }
     p {
+        font-size: 1rem;
+    }
+    li {
         font-size: 1rem;
     }
     .user {

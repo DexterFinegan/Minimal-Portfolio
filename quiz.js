@@ -2,14 +2,14 @@ let quizData = [
     {
         question : "Who sent this message to the poop chat?",
         image: "Assets/q1.png",
-        options : ["Harry", "Stephen", "Shrek", "Clay"],
+        options : ["Stephen", "Harry", "Shrek", "Clay"],
         correct : "Harry",
         answerImage : "Assets/a1.png"
     },
     {
         question : "Who sent this message to the poop chat?",
         image: "Assets/q2.png",
-        options : ["Ruby", "Suzanne", "Emma Sherlock", "Emma Smyth"],
+        options : ["Suzanne", "Emma Sherlock", "Ruby", "Emma Smyth"],
         correct : "Ruby",
         answerImage : "Assets/a2.png"
     },
@@ -37,14 +37,14 @@ let quizData = [
     {
         question : "Who sent this message to the poop chat?",
         image: "Assets/q6.png",
-        options : ["Niamh", "Harry", "Conor", "Suzanne"],
+        options : ["Harry", "Conor", "Suzanne", "Niamh"],
         correct : "Niamh",
         answerImage : "Assets/a6.png"
     },
     {
         question : "Who sent this message to the poop chat?",
         image: "Assets/q7.png",
-        options : ["Shane", "Seán", "Emma Sherlock", "Suzanne"],
+        options : ["Seán", "Shane", "Emma Sherlock", "Suzanne"],
         correct : "Shane",
         answerImage : "Assets/a7.png"
     },
@@ -65,7 +65,7 @@ let quizData = [
     {
         question : "Who sent this message to the poop chat?",
         image: "Assets/q10.png",
-        options : ["Conan", "Shane", "Stephen", "Eoin"],
+        options : ["Shane", "Stephen", "Conan", "Eoin"],
         correct : "Conan",
         answerImage : "Assets/a10.png"
     }
