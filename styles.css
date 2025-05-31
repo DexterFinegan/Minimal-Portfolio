@@ -6,6 +6,7 @@ h1 {
     transition-duration: 0.2s;
     max-width: 70vw;
     width: 100%;
+    text-align: center;
 }
 
 h1:hover {
@@ -166,7 +167,7 @@ h2:hover {
 .heatmap-pics {
     display: flex;
     flex-wrap: nowrap;
-    width: 95%;
+    width: 90%;
     margin-bottom: 30px;
 }
 
