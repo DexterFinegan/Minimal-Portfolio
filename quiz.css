@@ -1,9 +1,10 @@
 .quiz-container {
     font-family: Arial, sans-serif;
     max-width: 900px;
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
     padding: 16px;
+    text-align: center;
 }
 
 h1 {
@@ -20,8 +21,8 @@ body {
 
 #card {
     background-color: #fef4b1;
-    width: 75vw;
-    margin: auto 10px;
+    width: 100%;
+    margin: auto;
     display: flex;
     flex-flow: column wrap;
     align-items: center;
@@ -48,8 +49,8 @@ body {
 .image {
     border: 5px solid black;
     border-radius: 10px;
-    margin: 5px 25%;
-    width: 50%;
+    margin: 5px auto;
+    width: 100%;
 }
 
 .quiz-container .options {
@@ -146,6 +147,9 @@ body {
 @media (max-width: 700px) {
     .quiz-container .options {
         grid-template-columns: 1fr;
+    }
+    .quiz-container .option {
+        font-size: 15px;
     }
 }
 
