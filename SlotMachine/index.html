@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <title>Slots</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <h1>SLOT MACHINE</h1>
+        <p>You have <span id="current-balance"></span> dabloons to play with!</p>
+        <p>Get 3 of the same letter in any row and you win money!</p>
+        <p>D's have a 2x multiplier, C's are 3x, B's are 4x, and A's are 5x multiplied!!!</p>
+        <p id="instructions">How much would you like to bet?</p>
+        <input type="text" id="myInput" placeholder="20">
+        <button onclick="getBettingValue()">Lock in Bet</button>
+        <p id="output"></p>
+        <div id="slot-machine">
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+            <div class="slot"></div>
+        </div>
+        <button id="spin-button" onclick="play()">Spin</button>
+        <p id="winnings-display"></p>
+    </body>
+</html>
