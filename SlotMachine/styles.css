@@ -5,49 +5,81 @@
 }
 
 #slot-machine {
-    background-image: url("machine.png");
     width: 400px;
     height: 400px;
-    display: none;
+    display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     margin: auto;
+    background-color: #1C1C1C;
 }
+
+#machine-image {
+    position: absolute;
+    display: block;
+    z-index: 10;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 .slot {
     width: 100px;
     height: 100px;
-    margin: 16px;
-    display: none;
+    padding: 16px;
+    display: block;
     color: white;
     font-size: 4rem;
     text-align: center;
-    background-color: none;
+    background-image: none;
 }
 
 h1 {
     text-align: center;
     font-size: 3rem;
-    background: rgb(253, 228, 1);
+    background: linear-gradient(90deg, black 0%, #FFD700 25%, #FFD700 75%, black 100%);
     color: black;
+    box-shadow: 3px 3px 5px black;
+}
+
+h2 {
+    margin-top: 40px;
+    margin-bottom: 15px;
 }
 
 p {
-    font-size: 1rem;
+    font-size: 1.5rem;
+    margin: 10px;
 }
 
 body {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    background: rgb(30, 32, 54);
-    color: white;
+    background: #0B1F3A;
+    color: #F8F8F8;
+    background-image: url("bg.png");
 }
 
 button {
     display: block;
-    margin: 10px auto 10px auto;
+    margin: 10px 10px 10px 10px;
     font-size: 15pt;
-    padding: 10px;
+    padding: 20px;
+    background-color: #FFD700;
+    color: #0B1F3A;
+    border: 5px solid #0B1F3A;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #F5DEB3;
+    border-color: #F8F8F8;
+}
+
+button:active {
+    background-color: #B22222;
+    color: #F8F8F8;
 }
 
 input {
@@ -56,6 +88,117 @@ input {
     font-size: 20pt;
 }
 
-#winnings-display {
+#winnings-display output {
     font-size: 15pt;
+}
+
+#overlay {
+    background-color: 	#1C1C1C;
+    border-radius: 30px;
+    box-shadow: 5px 5px 8px black;
+    width: 50%;
+    height: auto;
+    margin: 5% 25% 0 25%;
+    position: fixed;
+    z-index: 1000;
+}
+
+#multiplier-box {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.multiplier-display {
+    border: 3px solid #F5DEB3;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px black;
+}
+
+h3 {
+    font-size: 2rem;
+    margin: 0px;
+}
+
+#main-title {
+    font-size: 5rem;
+    padding: 10px;
+    margin: 10px 0px 10px 0px;
+}
+
+#dabloons-image {
+    padding-top: 5px;
+    width: 50px;
+    height: 50px;
+}
+
+#dabloons {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+#current-balance {
+    font-size: 2.5rem;
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+#button-container {
+    display: flex;
+    width: 500px;
+    margin: 40px auto 100px auto;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.button-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#spinning-button {
+    margin: 0px auto 20px auto;
+}
+
+#help {
+    margin: 0px auto 0px 80%;
+}
+
+@media (max-width: 700px) {
+    #main-title {
+        font-size: 3rem;
+    }
+
+    #button-container {
+        width: 400px;
+    }
+
+    #overlay {
+        width: 90%;
+        margin: 5% 5% 0px 5%;
+    }
+
+    .multiplier-display {
+        width: 60px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    #help {
+        margin-left: 45%;
+    }
 }

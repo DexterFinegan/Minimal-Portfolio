@@ -17,10 +17,10 @@ const SYMBOL_VALUES = {
 }
 
 const SYMBOL_COLORS = {
-    "A": "green",
-    "B": "yellow",
-    "C": "orange",
-    "D": "red"
+    "A": "banana.png",
+    "B": "orange.png",
+    "C": "strawberry.png",
+    "D": "watermelon.png"
 }
 
 let balance = 100
@@ -30,28 +30,22 @@ let bet;
 
 
 function getBettingValue() {
-    const inputElement = document.getElementById("myInput");
+    const inputElement = document.getElementById("my-input");
     const bettingAmount = parseFloat(inputElement.value);
 
     if (isNaN(bettingAmount) || bettingAmount <= 0 || bettingAmount > balance) {
         document.getElementById("output").innerText = "You must enter a valid betting amount!";
-        console.log(bettingAmount);
     } else {
-        document.getElementById("output").innerText = "You're betting €" + bettingAmount;
-        console.log(bettingAmount);
+        document.getElementById("output").innerText = "You're betting " + bettingAmount + " dabloons";
 
         // Displaying hidden slotmachine
         const spinButton = document.getElementById("spin-button");
-        const slotMachine = document.getElementById("slot-machine")
-        const slots = document.querySelectorAll(".slot")
         spinButton.style.display = "block";
-        slotMachine.style.display = "flex";
-        slots.forEach(slot => {
-            slot.style.display = "block";
-        })
         bet = bettingAmount;
     }
-}
+};
+
+
 
 function spin() {
     const symbols = [];
@@ -78,7 +72,7 @@ function spin() {
     const spinButton = document.getElementById("spin-button");
     spinButton.innerHTML = "Spin Again?";
     const betReminder = document.getElementById("output");
-    betReminder.innerHTML = "You're still betting €" + bet.toString();
+    betReminder.innerHTML = "You're still betting " + bet.toString() + " dabloons";
     return reels
 };
 
@@ -99,14 +93,12 @@ const displayResult = (rows) => {
     for (i = 0; i < ROWS; i++) {
         for (j = 0; j < COLS; j++) {
             const slotNumber = 3*j + i;
-            slots[slotNumber].innerHTML = rows[j][i];
-            slots[slotNumber].style.backgroundColor = SYMBOL_COLORS[rows[j][i]];
+            slots[slotNumber].style.backgroundImage = `url(${SYMBOL_COLORS[rows[j][i]]})`;
         }
     }
 };
 
 const checkWinnings = (rows) => {
-    console.log(rows);
     let winnings = 0;
     for (let row = 0; row < ROWS; row++) {
         const symbols = rows[row];
@@ -129,7 +121,8 @@ const checkWinnings = (rows) => {
 
 const displayWinnings = (winnings) => {
     const display = document.getElementById("winnings-display");
-    display.innerHTML = "You won €" + winnings.toString();
+    display.innerHTML = "You won " + winnings.toString() + " dabloons";
+    display.style.display = "block";
     balance += winnings;
     balanceElement.innerHTML = balance.toString();
 };
@@ -141,11 +134,43 @@ const checkLoss = () => {
     }
 }
 
+const rollMachine = () => {
+    const slots = document.querySelectorAll(".slot");
+    const options = ["A", "B", "C", "D"]
+    for (i = 0; i < 30; i++) {
+        setTimeout(() => {
+            for (i = 0; i < ROWS; i++) {
+                for (j = 0; j < COLS; j++) {
+                    const slotNumber = 3*j + i;
+                    const slotSymbol = options[Math.floor(Math.random() * options.length)];
+                    slots[slotNumber].style.backgroundImage = `url(${SYMBOL_COLORS[slotSymbol]})`;
+                }
+            }
+        }, i * 100);
+    }
+};
+
+function toggleOverlay() {
+    const overlay = document.getElementById("overlay")
+    if (overlay.style.display == "none") {
+        overlay.style.display = "block";
+    }else {
+        overlay.style.display = "none";
+    }
+};
+
 function play() {
-    const reels = spin();
-    const rows = transpose(reels);
-    displayResult(rows);
-    const winnings = checkWinnings(rows);
-    displayWinnings(winnings);
-    checkLoss();
+    if (balance > 0) {
+        const reels = spin();
+        const rows = transpose(reels);
+        const winningTitle = document.getElementById("winnings-display");
+        winningTitle.style.display = "none";
+        rollMachine();
+        setTimeout(() => {
+            displayResult(rows);
+            const winnings = checkWinnings(rows);
+            displayWinnings(winnings);
+            checkLoss();
+        }, 3000);
+    }
 };

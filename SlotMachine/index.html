@@ -8,14 +8,41 @@
         <script src="script.js" defer></script>
     </head>
     <body>
-        <h1>SLOT MACHINE</h1>
-        <p>You have <span id="current-balance"></span> dabloons to play with!</p>
-        <p>Get 3 of the same letter in any row and you win money!</p>
-        <p>D's have a 2x multiplier, C's are 3x, B's are 4x, and A's are 5x multiplied!!!</p>
-        <p id="instructions">How much would you like to bet?</p>
-        <input type="text" id="myInput" placeholder="20">
-        <button onclick="getBettingValue()">Lock in Bet</button>
-        <p id="output"></p>
+        <div id="overlay">
+            <h1>SLOT MACHINE</h1>
+            <p> Win BIG at the Traders Casino!</p>
+            <p>We are awarding you 100 dabloons to start with!</p>
+            <h2>How to play</h2>
+            <p>Place a bet, spin the wheels and if any of the rows has a 3 of a kind then you Win Big!</p>
+            <p>Each fruit has a different multiplier which will increase your winnings even further!</p>
+            <h2>Multipliers</h2>
+            <div id="multiplier-box">
+                <div>
+                    <img src="watermelon.png" class="multiplier-display"/>
+                    <h3>2x</h3>
+                </div>
+                <div>
+                    <img src="strawberry.png" class="multiplier-display"/>
+                    <h3>3x</h3>
+                </div>
+                <div>
+                    <img src="orange.png" class="multiplier-display"/>
+                    <h3>4x</h3>
+                </div>
+                <div>
+                    <img src="banana.png" class="multiplier-display"/>
+                    <h3>5x</h3>
+                </div>
+            </div>
+            <button id="spinning-button" onclick="toggleOverlay()">Get Spinning!</button>
+        </div>
+        <h1 id="main-title">Trader's Casino</h1>
+        <div id="dabloons">
+            <p><span id="current-balance">100</span></p>
+            <img id="dabloons-image" src="dabloons.png"/>
+            <button id="help" onclick="toggleOverlay()">Help</button>
+        </div>
+        <img src="machine.png" id="machine-image"/>
         <div id="slot-machine">
             <div class="slot"></div>
             <div class="slot"></div>
@@ -27,7 +54,19 @@
             <div class="slot"></div>
             <div class="slot"></div>
         </div>
-        <button id="spin-button" onclick="play()">Spin</button>
-        <p id="winnings-display"></p>
+        <div id="button-container">
+            <div class="button-holder">
+                <input type="text" id="my-input" placeholder="20">
+                <button onclick="getBettingValue()">Lock in Bet</button>
+                <p id="output"></p>
+            </div>
+            <div class="button-holder">
+                <p></p>
+                <button id="spin-button" onclick="play()">Spin</button>
+                <p id="winnings-display"></p>
+            </div>
+            
+        </div>
+        
     </body>
 </html>
