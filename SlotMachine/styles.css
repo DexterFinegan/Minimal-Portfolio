@@ -28,9 +28,6 @@
     height: 100px;
     padding: 16px;
     display: block;
-    color: white;
-    font-size: 4rem;
-    text-align: center;
     background-image: none;
 }
 
@@ -170,7 +167,7 @@ h3 {
 
 @media (max-width: 700px) {
     #main-title {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 
     #button-container {
@@ -187,18 +184,52 @@ h3 {
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     p {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     h2 {
-        font-size: 1.3rem;
+        font-size: 1rem;
+        margin-top: 20px;
+    }
+
+    h3 {
+        font-size: 1rem;
     }
 
     #help {
-        margin-left: 45%;
+        margin-left: 35%;
+    }
+
+    button {
+        font-size: 0.8rem;
+        padding: 15px;
+    }
+
+    #current-balance {
+        font-size: 2rem;
+    }
+
+    #slot-machine {
+        width: 320px;
+        height: 320px;
+    }
+
+    .slot {
+        width: 80px;
+        height: 80px;
+        background-size: 100%;
+        padding: 13px;
+    }
+
+    #machine-image {
+        width: 320px;
+    }
+
+    #button-container {
+        width: 300px;
     }
 }
