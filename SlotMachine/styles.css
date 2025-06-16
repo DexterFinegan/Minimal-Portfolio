@@ -96,7 +96,7 @@ input {
     width: 50%;
     height: auto;
     margin: 5% 25% 0 25%;
-    position: fixed;
+    position: absolute;
     z-index: 1000;
 }
 

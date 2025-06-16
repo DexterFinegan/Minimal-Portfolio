@@ -16,6 +16,7 @@ const botName = "Chat Bot";
 
 // Run when a client connects
 io.on("connection", socket => {
+    console.log("Connected")
     socket.on("joinRoom", ({ username, room}) => {
         const user = userJoin(socket.id, username, room);
         socket.join(user.room);
@@ -56,6 +57,6 @@ io.on("connection", socket => {
     });
 });
 
-const PORT = 80 || process.env.PORT;
+const PORT = process.env.PORT || 5500;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
