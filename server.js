@@ -2,8 +2,8 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
-const formatMessage = require("./utils/messages");
-const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./utils/users")
+const formatMessage = require("./Chat Room/utils/messages");
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users")
 
 const app = express();
 const server = http.createServer(app);
@@ -11,6 +11,12 @@ const io = socketio(server);
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/chat", express.static(path.join(__dirname, "Chat Room/public")));
+app.use("/poop", express.static(path.join(__dirname, "Poopathon/public")));
+app.use("/slots", express.static(path.join(__dirname, "SlotMachine/public")));
+app.use("/shooter", express.static(path.join(__dirname, "Shooter/public")));
+app.use("/snake", express.static(path.join(__dirname, "Snake/public")));
 
 const botName = "Chat Bot";
 
