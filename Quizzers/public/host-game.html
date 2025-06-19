@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <title>Games by Dexter</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <h1>Game Host</h1>
+
+        <!-- Make a Room -->
+         <form id="hosting-form">
+            <div class="form-control">
+                <label for="roomcode">Room Code</label>
+                <input
+                    type="text"
+                    name="roomcode"
+                    id="roomcode"
+                    placeholder="Make a Room Code..."
+                    required
+                />
+            </div>
+            <button type="submit">Make Room</button>
+        </form>
+
+        <!-- Hosting Screen -->
+        <p id="roomcode-display"></p>
+        <div id="players">
+            <p>Online Players</p>
+            <ul id="player-list">
+
+            </ul>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.14.0/qs.min.js" integrity="sha512-6yLIYbXqyvjSDYNO1pgBRjwWPBw66kMOb+sHqrvn457+iJiret0PeHzUlpLKHH0fYzX9bxGtPDqQ84xKrhEYSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="host.js"></script>
+    </body>
+</html>
