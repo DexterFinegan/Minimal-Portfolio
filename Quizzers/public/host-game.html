@@ -8,30 +8,33 @@
     </head>
 
     <body>
-        <h1>Game Host</h1>
+        <nav>Closeted Skeletons</nav>
+        <h1 id="title">Host a Game</h1>
 
         <!-- Make a Room -->
          <form id="hosting-form">
-            <div class="form-control">
-                <label for="roomcode">Room Code</label>
-                <input
-                    type="text"
-                    name="roomcode"
-                    id="roomcode"
-                    placeholder="Make a Room Code..."
-                    required
-                />
-            </div>
+            <label for="roomcode">ROOMCODE</label>
+            <input
+                type="text"
+                name="roomcode"
+                id="roomcode"
+                placeholder="Make a Room Code..."
+                required
+            />
+            <p class="warning"></p>
             <button type="submit">Make Room</button>
         </form>
 
         <!-- Hosting Screen -->
+        <div id="roomcode-helper">
+            <p id="roomcode-display"></p>
+        </div>
         <p id="roomcode-display"></p>
         <div id="players">
-            <p>Online Players</p>
-            <ul id="player-list">
+            <p>Players</p>
+            <div id="player-list">
 
-            </ul>
+            </div>
         </div>
 
         <button id="start-game-btn">Start</button>

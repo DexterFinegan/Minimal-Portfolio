@@ -115,8 +115,6 @@ io.on("connection", socket => {
             const questions = generateQuestions();
             const room = newRoom(socket.id, code, questions);
             socket.join(room.roomcode);
-
-            socket.emit("hostMessage", (room));
         }
         socket.emit("roomCodeStatus", { code, isTaken });
     })

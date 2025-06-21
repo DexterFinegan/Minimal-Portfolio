@@ -1,0 +1,12 @@
+To Do list for this game before moving on
+
+Finish CSS graphics for displaying the answers
+implement a visual of the current scores after each question
+show the player score to them at all times
+Allow a player to vote for themself
+create several different skull icons to use for characters
+implement skull characters as the votes
+Draw a title screen background and gameplay background
+make 100+ questions
+make a horny mode
+Dislay results in order

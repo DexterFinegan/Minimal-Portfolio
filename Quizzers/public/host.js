@@ -7,6 +7,8 @@ const startBtn = document.getElementById("start-game-btn");
 const questionCard = document.getElementById("question-card");
 const playerCourt = document.getElementById("player-court");
 const exitBtn = document.getElementById("exit-btn");
+const warning = document.querySelector(".warning");
+const title = document.getElementById("title");
 
 let roomcode;
 
@@ -25,7 +27,8 @@ form.addEventListener("submit", e => {
 
 socket.on("roomCodeStatus", ({ code, isTaken }) => {
     if (isTaken) {
-        console.log("Room code is taken pick another")
+        console.log("Room code is taken pick another");
+        warning.innerText = "Room code is taken please select another"
     } else {
         roomcode = code;
         transitionToHostedGame(code);
@@ -52,6 +55,7 @@ socket.on("updateVotes", ({ voted, voter }) => {
             const votes = icon.querySelector(".votes");
             const voteElement = document.createElement("p");
             voteElement.innerText = voter.username;
+            voteElement.classList.add("vote");
             votes.appendChild(voteElement);
         }
     })
@@ -104,9 +108,10 @@ function updatePlayerList(players) {
     // Showing online players
     playerList.innerHTML = '';
     players.forEach((player) => {
-        const li = document.createElement('li');
-        li.innerText = player.username;
-        playerList.appendChild(li);
+        const div = document.createElement('div');
+        div.innerText = player.username;
+        div.classList.add("awaiting-player");
+        playerList.appendChild(div);
     });
 
     // Displaying start button
@@ -118,9 +123,11 @@ function updatePlayerList(players) {
 }
 
 function transitionToHostedGame(roomcode) {
-    roomCodeDisplay.innerHTML = `Room Code is "${roomcode}"`;
+    roomCodeDisplay.innerHTML = `Room Code: ${roomcode}`;
+    roomCodeDisplay.style.display = "block";
     form.style.display = "none";
     playersDiv.style.display = "block";
+    title.innerText = "";
 }
 
 function displayQuestion(question, players) {
@@ -131,7 +138,7 @@ function displayQuestion(question, players) {
     questionCard.innerText = question;
 
     // Players
-    playerCourt.style.display = "block";
+    playerCourt.style.display = "flex";
     players.forEach((player) => {
         const divElement = document.createElement("div")
         divElement.innerHTML = `<p class="player-name">${player.username}</p>

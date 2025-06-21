@@ -1,4 +1,5 @@
-const playerDescription = document.getElementById("player-description");
+const playerUsername = document.getElementById("player-username");
+const playerRoom = document.getElementById("player-room");
 const playerList = document.getElementById("player-list");
 const form = document.getElementById("joining-form");
 const input = document.getElementById("roomcode");
@@ -8,6 +9,9 @@ const playerQuestion = document.getElementById("player-question");
 const playerVotingOptions = document.getElementById("player-voting-options");
 const playerAnswer = document.getElementById("player-answer");
 const answerSubmit = document.getElementById("answer-submit");
+const title = document.getElementById("title");
+const warning = document.getElementById("warning");
+const navbar = document.querySelector("nav");
 
 const socket = io();
 
@@ -29,6 +33,7 @@ socket.on("roomCodeStatus", ({ code, isTaken }) => {
         transitionToPlayerScreen(code);
     } else {
         console.log("No Room of that code try again")
+        warning.innerText = "There is no room with this code, pick another"
     }
 })
 
@@ -49,24 +54,28 @@ function outputOtherPlayers(players) {
     playerList.innerHTML = '';
     players.forEach((player) => {
         if (player.id != socket.id) {
-            const li = document.createElement('li');
-            li.innerText = player.username;
-            playerList.appendChild(li);
+            const div = document.createElement('div');
+            div.innerText = player.username;
+            div.classList.add("awaiting-player");
+            playerList.appendChild(div);
         }
     });
 }
 
 function transitionToPlayerScreen(code) {
-    playerDescription.innerHTML = `Username : ${usernameElement.value.trim()}  -  Room Code : "${code}"`
+    playerUsername.textContent = usernameElement.value.trim();
+    playerRoom.textContent = code;
     form.style.display = "none";
-    playersDiv.style.display = "block";
+    playersDiv.style.display = "flex";
+    title.innerText = "";
+    navbar.style.display = "none";
 }
 
 function displayQuestion(question, players) {
     playersDiv.style.display = "none";
     playerQuestion.style.display = "block";
     playerQuestion.innerText = question;
-    playerVotingOptions.style.display = "block";
+    playerVotingOptions.style.display = "flex";
 
     players.forEach((player) => {
         if (player.id != socket.id) {
@@ -110,7 +119,7 @@ answerSubmit.addEventListener("click", e => {
 
 socket.on("displayResults", (players) => {
     playerQuestion.style.display = "none";
-    playerVotingOptions.style.display = "block";
+    playerVotingOptions.style.display = "flex";
     players.forEach(player => {
         const newElement = document.createElement("p");
         newElement.innerText = `${player.username} scored ${player.score}`
