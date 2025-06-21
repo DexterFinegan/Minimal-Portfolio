@@ -1,13 +1,21 @@
 let players = [];
 
 function newPlayer (id, roomcode, username) {
-    const player = {id, roomcode, username};
+    const player = {id, roomcode, username, score: 0, votedBy: []};
     players.push(player);
     return player;
 }
 
-function getPlayers () {
-    return players;
+function getRoomPlayers (roomcode) {
+    return players.filter(player => player.roomcode == roomcode);
+}
+
+function getPlayerByUsername(username) {
+    return players.find(player => player.username == username);
+}
+
+function getPlayerbyId(id) {
+    return players.find(player => player.id == id);
 }
 
 function playerLeave(id) {
@@ -22,10 +30,17 @@ function removeAllPlayers(roomcode) {
     players = players.filter(player => player.roomcode != roomcode);
 }
 
+function votedByPlayer(votedPlayer, voter) {
+    votedPlayer.votedBy.push(voter.username);
+}
+
 
 module.exports = {
     newPlayer,
-    getPlayers,
+    getRoomPlayers,
+    getPlayerByUsername,
+    getPlayerbyId,
     playerLeave,
-    removeAllPlayers
+    removeAllPlayers,
+    votedByPlayer
 }

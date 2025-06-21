@@ -13,3 +13,39 @@
 #joining-form {
     display: block;
 }
+
+#start-game-btn {
+    display: none;
+}
+
+#question-card {
+    display: none;
+}
+
+#player-court {
+    display: none;
+}
+
+#player-question {
+    display: none;
+}
+
+#player-voting-options {
+    display: none;
+}
+
+#player-answer {
+    display: none;
+}
+
+#answer-submit {
+    display: none;
+}
+
+.votes {
+    color: red;
+}
+
+#exit-btn {
+    display: none;
+}

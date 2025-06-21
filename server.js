@@ -8,8 +8,8 @@ const formatMessage = require("./Chat Room/utils/messages");
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users");
 
 // Quiz Game Imports
-const { newRoom, getRooms, roomLeave } = require("./Quizzers/utils/room");
-const { newPlayer, getPlayers, playerLeave, removeAllPlayers } = require("./Quizzers/utils/player");
+const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers } = require("./Quizzers/utils/room");
+const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/player");
 
 const app = express();
 const server = http.createServer(app);
@@ -75,9 +75,10 @@ io.on("connection", socket => {
         // Checking Quiz App Players
         const player = playerLeave(socket.id);
         if (player) {
-            const remainingPlayers = getPlayers();
-            io.to(player.roomcode).emit("roomPlayers", remainingPlayers);
-            io.to(player.roomcode).emit("playerMessage", `${player.username} disconnected`);
+            const roomcode = player.roomcode;
+            const remainingPlayers = getRoomPlayers(roomcode);
+            io.to(roomcode).emit("roomPlayers", remainingPlayers);
+            io.to(roomcode).emit("playerMessage", `${player.username} disconnected`);
             console.log("A Player Disconnected");
         }
 
@@ -92,7 +93,7 @@ io.on("connection", socket => {
     });
 
     // FOR THE QUIZ
-
+    // When a player joins
     socket.on("playerJoin", ({ code, username }) => {
         // Player Part
         console.log("Player Joining");
@@ -101,21 +102,85 @@ io.on("connection", socket => {
         socket.join(player.roomcode)
 
         // Host Part
-        const players = getPlayers();
-        io.emit("hostMessage", players);
+        const players = getRoomPlayers(code);
+        io.to(code).emit("hostMessage", players);
         io.to(code).emit("roomPlayers", players);
     });
 
+    // For Checking availability of rooms
     socket.on("checkRooms", ({ code, isNewRoom }) => {
         rooms = getRooms();
         const isTaken = rooms.some(room => room.roomcode == code);
         if (!isTaken && isNewRoom) {
-            const room = newRoom(socket.id, code);
+            const questions = generateQuestions();
+            const room = newRoom(socket.id, code, questions);
             socket.join(room.roomcode);
 
             socket.emit("hostMessage", (room));
         }
         socket.emit("roomCodeStatus", { code, isTaken });
+    })
+
+    // Starting the game
+    socket.on("startGame", (roomcode) => {
+        console.log("Server Starting Game")
+        const players = getRoomPlayers(roomcode);
+        const room = getRooms().find(room => room.roomcode == roomcode)
+        const question = room.questions[0].question;
+        room.questionCount += 1;
+        io.to(roomcode).emit("nextQuestion", { question, players });
+    })
+
+    socket.on("Voted", (player) => {
+        const voted = getPlayerByUsername(player);
+        const voter = getPlayerbyId(socket.id);
+        console.log(`${voted.username} was voted by ${voter.username}`);
+        votedByPlayer(voted, voter);
+        io.to(voter.roomcode).emit("updateVotes", {voted, voter});
+    })
+
+    socket.on("Answered", (answer) => {
+        const player = getPlayerbyId(socket.id);
+        const roomcode = player.roomcode;
+        const totalPlayers = getRoomPlayers(roomcode);
+        console.log(`${player.username} answered with "${answer}"`);
+        const answerObject = { answer, player };
+        const allAnswers = addAnswer({ answerObject, totalPlayers});
+
+        if (allAnswers != undefined) {
+            io.to(roomcode).emit("answerReveal", allAnswers);
+            resetAnswers();
+        }
+    })
+
+    socket.on("questionAnswer", (selectedPlayer) => {
+        const playerWin = getPlayerByUsername(selectedPlayer);
+        const players = getRoomPlayers(playerWin.roomcode);
+        // Awarding points
+        players.forEach(player => {
+            if (playerWin.votedBy.includes(player.username)) {
+                player.score += 100;
+            } else {
+                playerWin.score += 100;
+            };
+        });
+        io.to(playerWin.roomcode).emit("updateScores", players);
+
+        // Clearing the Votedby list
+        players.forEach(player => {
+            player.votedBy = [];
+        });
+
+        // Setting Up Next Question
+        const room = getRooms().find(room => room.roomcode == playerWin.roomcode);
+        if (room.questionCount != room.questions.length){
+            const question = room.questions[room.questionCount].question;
+            room.questionCount += 1;
+            io.to(playerWin.roomcode).emit("nextQuestion", {question, players})
+        } else {
+            console.log("Game is over")
+            io.to(playerWin.roomcode).emit("displayResults", players);
+        };
     })
 });
 
