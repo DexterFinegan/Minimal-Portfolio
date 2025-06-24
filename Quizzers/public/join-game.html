@@ -21,6 +21,7 @@
                 placeholder="Enter the Room Code..."
                 required
             />
+            <p class="warning"></p>
             <label for="username">Username</label>
             <input
                 type="text"
@@ -29,7 +30,41 @@
                 placeholder="Enter username..."
                 required
             />
-            <p class="warning"></p>
+            <p>Select a Skull</p>
+            <div id="icon-selection">
+                <input type="radio" id="happy" name="skull" value="happy" hidden>
+                <label class="icon-label" for="happy">
+                    <img class= "icon-selector" src="Assets/happy-idle.png">
+                </label>
+                <input type="radio" id="cute" name="skull" value="cute" hidden>
+                <label class="icon-label" for="cute">
+                    <img class= "icon-selector" src="Assets/cute-idle.png">
+                </label>
+                <input type="radio" id="angry" name="skull" value="angry" hidden>
+                <label class="icon-label" for="angry">
+                    <img class= "icon-selector" src="Assets/angry-idle.png">
+                </label>
+                <input type="radio" id="builder" name="skull" value="builder" hidden>
+                <label class="icon-label" for="builder">
+                    <img class= "icon-selector" src="Assets/builder-idle.png">
+                </label>
+                <input type="radio" id="dear" name="skull" value="dear" hidden>
+                <label class="icon-label" for="dear">
+                    <img class= "icon-selector" src="Assets/dear-idle.png">
+                </label>
+                <input type="radio" id="fancy" name="skull" value="fancy" hidden>
+                <label class="icon-label" for="fancy">
+                    <img class= "icon-selector" src="Assets/fancy-idle.png">
+                </label>
+                <input type="radio" id="pirate" name="skull" value="pirate" hidden>
+                <label class="icon-label" for="pirate">
+                    <img class= "icon-selector" src="Assets/pirate-idle.png">
+                </label>
+                <input type="radio" id="smart" name="skull" value="smart" hidden>
+                <label class="icon-label" for="smart">
+                    <img class= "icon-selector" src="Assets/smart-idle.png">
+                </label>
+            </div>
             <button type="submit">Join Room</button>
         </form>
 
@@ -52,6 +87,9 @@
             <input type="text" id="player-answer" placeholder="Your Answer"/>
             <button id="answer-submit">Submit Answer</button>
         </div>
+        
+        <button id="jump-btn">Press</button>
+        <div id="client-results"><h1>Results</h1></div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.14.0/qs.min.js" integrity="sha512-6yLIYbXqyvjSDYNO1pgBRjwWPBw66kMOb+sHqrvn457+iJiret0PeHzUlpLKHH0fYzX9bxGtPDqQ84xKrhEYSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="join.js"></script>

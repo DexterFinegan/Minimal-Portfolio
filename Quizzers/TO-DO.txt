@@ -1,12 +1,18 @@
 To Do list for this game before moving on
 
-Finish CSS graphics for displaying the answers
-implement a visual of the current scores after each question
-show the player score to them at all times
-Allow a player to vote for themself
-create several different skull icons to use for characters
-implement skull characters as the votes
-Draw a title screen background and gameplay background
-make 100+ questions
-make a horny mode
-Dislay results in order
+Finish CSS graphics for displaying the answers                  X
+implement a visual of the current scores after each question    X
+show the player score to them at all times                      X
+Allow a player to vote for themself                             X
+create several different skull icons to use for characters      X   
+implement skull characters as the votes                         X
+Add Toggleability to excited state of skulls                    X
+Draw a title screen background and gameplay background          X
+make 50+ questions                                              X
+make a horny mode                                               X
+Dislay results in order                                         X
+Rejig CSS to work on smaller devices                            X
+    - Question Card too wide                                    X
+    - Question text too big                                     X
+    - Voting buttons too small                                  X
+Sort out disconnections and late connections                    X

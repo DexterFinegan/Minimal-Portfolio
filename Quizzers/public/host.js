@@ -9,6 +9,10 @@ const playerCourt = document.getElementById("player-court");
 const exitBtn = document.getElementById("exit-btn");
 const warning = document.querySelector(".warning");
 const title = document.getElementById("title");
+const results = document.getElementById("player-results");
+const navbar = document.querySelector("nav");
+const body = document.querySelector("body");
+const safeBtn = document.getElementById("safe-btn");
 
 let roomcode;
 
@@ -22,10 +26,11 @@ form.addEventListener("submit", e => {
 
     const code = input.value.trim();
     const isNewRoom = true
-    socket.emit("checkRooms", { code, isNewRoom });
+    const username = undefined
+    socket.emit("checkRooms", { code, isNewRoom, username });
 });
 
-socket.on("roomCodeStatus", ({ code, isTaken }) => {
+socket.on("roomCodeStatus", ({ code, isTaken, isReconnection }) => {
     if (isTaken) {
         console.log("Room code is taken pick another");
         warning.innerText = "Room code is taken please select another"
@@ -53,8 +58,8 @@ socket.on("updateVotes", ({ voted, voter }) => {
         const nameText = icon.querySelector(".player-name").textContent;
         if (nameText == voted.username) {
             const votes = icon.querySelector(".votes");
-            const voteElement = document.createElement("p");
-            voteElement.innerText = voter.username;
+            const voteElement = document.createElement("img");
+            voteElement.src = `Assets/${voter.icon}`;
             voteElement.classList.add("vote");
             votes.appendChild(voteElement);
         }
@@ -85,13 +90,27 @@ socket.on("answerReveal", (allAnswers) => {
 })
 
 socket.on("updateScores", (players) => {
-    console.log(players);
     // Clearing created elements
     document.querySelectorAll(".user-answer").forEach(el => {
         el.remove();
     });
 
     playerCourt.innerHTML = "";
+})
+
+socket.on("resultsTable", (players) => {
+    results.innerHTML = ""
+    players.sort((a, b) => b.score - a.score);
+    players.forEach(player => {
+        const resultDiv = document.createElement("div");
+        resultDiv.innerHTML = `<img class="result-img player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                                <p>${player.username} : ${player.score}</p>`
+        resultDiv.classList.add("result-div");
+        results.appendChild(resultDiv);
+    })
+    results.style.display = "block";
+    questionCard.style.display = "none";
+    playerCourt.style.display = "none";
 })
 
 
@@ -104,12 +123,25 @@ socket.on("roomPlayers", (players) => {
     updatePlayerList(players);
 })
 
+safeBtn.addEventListener("click", e => {
+    console.log("Button Clicked")
+    if (safeBtn.innerText == "Enter Safe Mode") {
+        safeBtn.innerText = "Exit Safe Mode";
+    } else {
+        safeBtn.innerText = "Enter Safe Mode"
+    }
+    socket.emit("toggleSafeMode");
+})
+
 function updatePlayerList(players) {
     // Showing online players
+    safeBtn.style.display = "block"
+    console.log("updated")
     playerList.innerHTML = '';
     players.forEach((player) => {
         const div = document.createElement('div');
-        div.innerText = player.username;
+        div.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                        <p>${player.username}</p>`;
         div.classList.add("awaiting-player");
         playerList.appendChild(div);
     });
@@ -136,28 +168,65 @@ function displayQuestion(question, players) {
     startBtn.style.display = "none";
     questionCard.style.display = "block";
     questionCard.innerText = question;
+    safeBtn.style.display = "none"
+    navbar.style.display = "none";
+    results.style.display = "none";
+    results.innerHTML = "";
+    body.style.backgroundImage = "url(Assets/skull-bg2.png";
+    playerCourt.innerHTML = "";
 
     // Players
     playerCourt.style.display = "flex";
     players.forEach((player) => {
         const divElement = document.createElement("div")
-        divElement.innerHTML = `<p class="player-name">${player.username}</p>
-                <div class="votes">
-                </div>`;
+        divElement.innerHTML = `<img class="voting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                                <p class="player-name">${player.username}</p>
+                                <div class="votes">
+                                </div>`;
         divElement.classList.add("player-icon");
         playerCourt.appendChild(divElement);
     })
 }
 
-socket.on("displayResults", (players) => {
-    questionCard.style.display = "none";
-    playerCourt.style.display = "block";
+socket.on("updateDisconnect", (players) => {
+    playerCourt.innerHTML = "";
     players.forEach((player) => {
         const divElement = document.createElement("div")
-        divElement.innerHTML = `<p class="player-name">${player.username}</p>
-                <p>Score: ${player.score}</p>`;
+        divElement.innerHTML = `<img class="voting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                                <p class="player-name">${player.username}</p>
+                                <div class="votes">
+                                </div>`;
         divElement.classList.add("player-icon");
         playerCourt.appendChild(divElement);
     })
+})
+
+socket.on("displayResults", (players) => {
+    questionCard.style.display = "none";
+    playerCourt.style.display = "none";
+    navbar.style.display = "block";
+    results.style.display = "flex";
+    // sorting the players
+    players.sort((a, b) => b.score - a.score);
+
+    // Displaying the players
+    players.forEach((player) => {
+        const divElement = document.createElement("div")
+        divElement.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                                <p class="player-name">${player.username}</p>
+                                <p>Score: ${player.score}</p>`;
+        divElement.classList.add("score-show");
+        results.appendChild(divElement);
+    })
     exitBtn.style.display = "block";
+})
+
+socket.on("playerJumped", (player) => {
+    document.querySelectorAll('.player-skull').forEach(img => {
+        const playerData = img.dataset.player;
+        if (playerData == player.username) {
+            img.src = `Assets/${player.icon}`;
+            
+        };
+    });
 })

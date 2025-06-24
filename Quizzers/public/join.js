@@ -12,6 +12,8 @@ const answerSubmit = document.getElementById("answer-submit");
 const title = document.getElementById("title");
 const warning = document.getElementById("warning");
 const navbar = document.querySelector("nav");
+const results = document.getElementById("client-results");
+const jumpBtn = document.getElementById("jump-btn");
 
 const socket = io();
 
@@ -22,18 +24,32 @@ form.addEventListener("submit", e => {
     e.preventDefault();
 
     const code = input.value.trim();
+    const username = usernameElement.value.trim();
     const isNewRoom = false;
-    socket.emit("checkRooms", { code, isNewRoom });
+    socket.emit("checkRooms", { code, isNewRoom, username });
 });
 
-socket.on("roomCodeStatus", ({ code, isTaken }) => {
-    if (isTaken) {
+socket.on("roomCodeStatus", ({ code, isTaken, isReconnection }) => {
+    const selected = document.querySelector('input[name="skull"]:checked');
+    if (isTaken && selected) {
+        const idleImage = `${selected.value.trim()}-idle.png`;
+        const excitedImage = `${selected.value.trim()}-excited.png`;
         const username = usernameElement.value.trim();
-        socket.emit("playerJoin", { code, username });
-        transitionToPlayerScreen(code);
+        if (isReconnection != undefined) {
+            player = isReconnection;
+            player.idleImage = idleImage;
+            player.excitedImage = excitedImage;
+            player.id = socket.id;
+            player.votedBy = [];
+            console.log(`Reconnecting ${username}`);
+            socket.emit("reconnection", player);
+        } else {
+            socket.emit("playerJoin", { code, username, idleImage, excitedImage });
+            transitionToPlayerScreen(code);
+        }
     } else {
         console.log("No Room of that code try again")
-        warning.innerText = "There is no room with this code, pick another"
+        warning.innerText = "There is no room with this code or someone already has your username, pick another"
     }
 })
 
@@ -55,7 +71,8 @@ function outputOtherPlayers(players) {
     players.forEach((player) => {
         if (player.id != socket.id) {
             const div = document.createElement('div');
-            div.innerText = player.username;
+            div.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                            <p>${player.username}</p>`;
             div.classList.add("awaiting-player");
             playerList.appendChild(div);
         }
@@ -69,23 +86,44 @@ function transitionToPlayerScreen(code) {
     playersDiv.style.display = "flex";
     title.innerText = "";
     navbar.style.display = "none";
+    jumpBtn.style.display = "block";
 }
 
 function displayQuestion(question, players) {
     playersDiv.style.display = "none";
+    form.style.display = "none";
+    title.innerText = "";
+    navbar.style.display = "none";
+    jumpBtn.style.display = "block";
     playerQuestion.style.display = "block";
     playerQuestion.innerText = question;
     playerVotingOptions.style.display = "flex";
+    playerVotingOptions.innerHTML = "";
+
+    // Updating score
+    console.log(players);
+    console.log(usernameElement.value.trim());
+    const self = players.filter(player => player.username == usernameElement.value.trim())[0];
+    console.log(self);
+    playerUsername.innerText = `${self.username} : ${self.score}`;
 
     players.forEach((player) => {
-        if (player.id != socket.id) {
-            const buttonElement = document.createElement("button");
-            buttonElement.innerText = player.username;
-            buttonElement.classList.add("voting-button");
-            playerVotingOptions.appendChild(buttonElement);
-        }
+        const buttonElement = document.createElement("button");
+        buttonElement.innerText = player.username;
+        buttonElement.classList.add("voting-button");
+        playerVotingOptions.appendChild(buttonElement);
     });
 }
+
+socket.on("updateDisconnect", (players) => {
+    playerVotingOptions.innerHTML = "";
+    players.forEach((player) => {
+        const buttonElement = document.createElement("button");
+        buttonElement.innerText = player.username;
+        buttonElement.classList.add("voting-button");
+        playerVotingOptions.appendChild(buttonElement);
+    });
+})
 
 function hideButtons() {
     playerVotingOptions.style.display = "none";
@@ -119,9 +157,30 @@ answerSubmit.addEventListener("click", e => {
 
 socket.on("displayResults", (players) => {
     playerQuestion.style.display = "none";
-    playerVotingOptions.style.display = "flex";
+    playerVotingOptions.style.display = "none";
+    results.style.display = "flex";
+    // Sorting the players
+    players.sort((a, b) => b.score - a.score);
+
+    // Displaying the players
     players.forEach(player => {
         const newElement = document.createElement("p");
-        newElement.innerText = `${player.username} scored ${player.score}`
+        newElement.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                        <p>${player.username} : ${player.score}</p>`;
+        newElement.classList.add("result");
+        results.appendChild(newElement);
     })
+})
+
+jumpBtn.addEventListener("click", e => {
+    socket.emit("Jump");
+})
+
+socket.on("playerJumped", (player) => {
+    document.querySelectorAll('.player-skull').forEach(img => {
+    const playerData = img.dataset.player;
+    if (playerData == player.username) {
+        img.src = `Assets/${player.icon}`;
+    };
+    });
 })
