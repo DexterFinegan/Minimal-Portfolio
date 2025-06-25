@@ -8,8 +8,8 @@ const formatMessage = require("./Chat Room/utils/messages");
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users");
 
 // Quiz Game Imports
-const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode, addPlayer, findPlayer } = require("./Quizzers/utils/room");
-const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/player");
+const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode, addPlayer, findPlayer } = require("./Quizzers/utils/roomv2");
+const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/playerv2");
 
 const app = express();
 const server = http.createServer(app);
