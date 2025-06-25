@@ -1,8 +1,7 @@
 let players = [];
-let disconnected_players = [];
 
-function newPlayer (id, roomcode, username, idleImage, excitedImage) {
-    const player = {id, roomcode, username, idleImage, excitedImage, icon: idleImage, score: 0, votedBy: []};
+function newPlayer (id, roomcode, username, idleImage, excitedImage, playerId) {
+    const player = {id, roomcode, username, idleImage, excitedImage, playerId, icon: idleImage, score: 0, votedBy: []};
     players.push(player);
     return player;
 }
@@ -24,29 +23,10 @@ function playerLeave(id) {
 
     if (index !== -1) {
         const disconnectedPlayer = players.splice(index, 1)[0]; // only splice once
-        disconnected_players.push(disconnectedPlayer);
         return disconnectedPlayer;
     }
 
     return null;
-}
-
-function searchDisconnectedPlayers(username) {
-    if (disconnected_players.length > 0){
-        return disconnected_players.find(player => player.username == username);
-    }
-}
-
-function reconnectPlayer(player) {
-    // removing from disconnected players
-    const index = disconnected_players.findIndex(user => user.username = player.username);
-    if (index !== -1 && index != undefined) {
-        disconnected_players = disconnected_players.splice(index, 1);
-    }
-
-    // Adding player back to game
-    players.push(player);
-    return players;
 }
 
 function removeAllPlayers(roomcode) {
@@ -66,7 +46,5 @@ module.exports = {
     getPlayerbyId,
     playerLeave,
     removeAllPlayers,
-    votedByPlayer,
-    searchDisconnectedPlayers,
-    reconnectPlayer
+    votedByPlayer
 }

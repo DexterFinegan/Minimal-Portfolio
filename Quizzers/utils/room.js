@@ -2,7 +2,7 @@ const rooms = [];
 let answers = [];
 
 function newRoom(id, roomcode, questions) {
-    const room = {id, roomcode, questions, questionCount: 0, begun: false, hornyMode: true, maxQuestions: 10};
+    const room = {id, roomcode, questions, playerIds: [], questionCount: 0, begun: false, hornyMode: true, maxQuestions: 10};
     rooms.push(room);
 
     return room;
@@ -15,12 +15,16 @@ function getRooms() {
 function toggleHornyMode(roomcode) {
     const room = rooms.find(room => room.roomcode == roomcode);
     if (room.hornyMode) {
+        console.log("Safe mode turned on")
         room.hornyMode = false
-        room.questions.filter(question => question.deep == false);
+        room.questions = generateQuestions(room.hornyMode)
     } else {
+        console.log("Safe mode turned off")
         room.hornyMode = true
-        room.questions = generateQuestions();
+        room.questions = generateQuestions(room.hornyMode);
     }
+    console.log(room.hornyMode)
+    console.log(room.questions.slice(0, 10))
 }
 
 function roomLeave(id) {
@@ -133,7 +137,7 @@ let quizData = [
         deep: false
     },
     {
-        question : "Who did the nicest thing today?",
+        question : "Who had the most unhinged childhood celebrity crush?",
         deep: false
     },
     {
@@ -217,7 +221,7 @@ let quizData = [
         deep: false
     },
     {
-        question : "Who has the least sets on pyjamas?",
+        question : "Who has the least sets of pyjamas?",
         deep: false
     },
     {
@@ -254,9 +258,12 @@ function shuffleArray(array) {
     return array.slice().sort(() => Math.random() - 0.5);
 };
 
-function generateQuestions() {
-    quizData = shuffleArray(quizData);
-    return quizData;
+function generateQuestions(hornyMode) {
+    let allQuestions = shuffleArray(quizData);
+    if (!hornyMode) {
+        allQuestions = allQuestions.filter(question => question.deep === false);
+    }
+    return allQuestions;
 }
 
 function addAnswer({ answerObject, totalPlayers }) {
@@ -270,6 +277,18 @@ function resetAnswers() {
     answers = [];
 }
 
+function addPlayer({ code, playerId }) {
+    const room = rooms.find(room => room.roomcode == code);
+    room.playerIds.push(playerId);
+}
+
+function findPlayer({ code, playerId }) {
+    const room = rooms.find(room => room.roomcode == code);
+    if (room) {
+        return room.playerIds.find(id => id == playerId);
+    }
+}
+
 module.exports = {
     newRoom,
     getRooms,
@@ -277,5 +296,7 @@ module.exports = {
     generateQuestions,
     addAnswer,
     resetAnswers,
-    toggleHornyMode
+    toggleHornyMode,
+    addPlayer,
+    findPlayer
 }

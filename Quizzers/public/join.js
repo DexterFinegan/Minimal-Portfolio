@@ -29,24 +29,23 @@ form.addEventListener("submit", e => {
     socket.emit("checkRooms", { code, isNewRoom, username });
 });
 
-socket.on("roomCodeStatus", ({ code, isTaken, isReconnection }) => {
+socket.on("roomCodeStatus", ({ code, isTaken }) => {
     const selected = document.querySelector('input[name="skull"]:checked');
     if (isTaken && selected) {
         const idleImage = `${selected.value.trim()}-idle.png`;
         const excitedImage = `${selected.value.trim()}-excited.png`;
         const username = usernameElement.value.trim();
-        if (isReconnection != undefined) {
-            player = isReconnection;
-            player.idleImage = idleImage;
-            player.excitedImage = excitedImage;
-            player.id = socket.id;
-            player.votedBy = [];
-            console.log(`Reconnecting ${username}`);
-            socket.emit("reconnection", player);
-        } else {
-            socket.emit("playerJoin", { code, username, idleImage, excitedImage });
-            transitionToPlayerScreen(code);
+
+        // Checking reconnection
+        let playerId = localStorage.getItem("playerId");
+        if (!playerId) {
+            playerId = 'player-' + Math.random().toString(36).slice(2, 11);
+            console.log(playerId)
+            localStorage.setItem("playerId", playerId);
         }
+        socket.emit("playerJoin", { code, username, idleImage, excitedImage, playerId });
+        transitionToPlayerScreen(code);
+        
     } else {
         console.log("No Room of that code try again")
         warning.innerText = "There is no room with this code or someone already has your username, pick another"
@@ -89,7 +88,7 @@ function transitionToPlayerScreen(code) {
     jumpBtn.style.display = "block";
 }
 
-function displayQuestion(question, players) {
+function displayQuestion({question, players}) {
     playersDiv.style.display = "none";
     form.style.display = "none";
     title.innerText = "";
@@ -101,28 +100,28 @@ function displayQuestion(question, players) {
     playerVotingOptions.innerHTML = "";
 
     // Updating score
-    console.log(players);
-    console.log(usernameElement.value.trim());
-    const self = players.filter(player => player.username == usernameElement.value.trim())[0];
-    console.log(self);
-    playerUsername.innerText = `${self.username} : ${self.score}`;
+    if (players) {
+        console.log(players)
+        const self = players.filter(player => player.playerId == localStorage.getItem("playerId"))[0];
+        console.log(self);
+        playerUsername.innerText = `${self.username} : ${self.score}`;
 
-    players.forEach((player) => {
-        const buttonElement = document.createElement("button");
-        buttonElement.innerText = player.username;
-        buttonElement.classList.add("voting-button");
-        playerVotingOptions.appendChild(buttonElement);
-    });
+        players.forEach((player) => {
+            const buttonElement = document.createElement("button");
+            buttonElement.innerText = player.username;
+            buttonElement.classList.add("voting-button");
+            playerVotingOptions.appendChild(buttonElement);
+            buttonElement.style.display = "block";
+        });
+    }
 }
 
-socket.on("updateDisconnect", (players) => {
-    playerVotingOptions.innerHTML = "";
-    players.forEach((player) => {
-        const buttonElement = document.createElement("button");
-        buttonElement.innerText = player.username;
-        buttonElement.classList.add("voting-button");
-        playerVotingOptions.appendChild(buttonElement);
-    });
+socket.on("updateDisconnect", ({ players, username, begun, type, question }) => {
+    if (begun) {
+        displayQuestion({question, players});
+    } else {
+        outputOtherPlayers(players);
+    }
 })
 
 function hideButtons() {
@@ -134,7 +133,7 @@ function hideButtons() {
 
 // Playing the Game
 socket.on("nextQuestion", ({ question, players }) => {
-    displayQuestion(question, players);
+    displayQuestion({question, players});
 })
 
 playerVotingOptions.addEventListener("click", e => {

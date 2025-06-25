@@ -16,3 +16,9 @@ Rejig CSS to work on smaller devices                            X
     - Question text too big                                     X
     - Voting buttons too small                                  X
 Sort out disconnections and late connections                    X
+Fix Disconnecting issues overall                                X
+answer boxes are too wide for mobile                            X
+Limit on questions doesn't work                                 X
+Make sure the horny mode button works                           X
+Is it possible to make the answers not spread into the question card? X
+Fix the look of the temp scores on screen                       X

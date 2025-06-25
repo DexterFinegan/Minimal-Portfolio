@@ -8,8 +8,8 @@ const formatMessage = require("./Chat Room/utils/messages");
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users");
 
 // Quiz Game Imports
-const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode } = require("./Quizzers/utils/room");
-const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId, searchDisconnectedPlayers } = require("./Quizzers/utils/player");
+const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode, addPlayer, findPlayer } = require("./Quizzers/utils/room");
+const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/player");
 
 const app = express();
 const server = http.createServer(app);
@@ -76,9 +76,13 @@ io.on("connection", socket => {
         if (player) {
             const roomcode = player.roomcode;
             const remainingPlayers = getRoomPlayers(roomcode);
-            io.to(roomcode).emit("updateDisconnect", (remainingPlayers));
+            const username = player.username;
+            const begun = getRooms().find(room => room.roomcode == roomcode).begun;
+            const type = "disconnect";
+            const room = getRooms().find(room => room.roomcode == roomcode);
+            const question = room.questions[room.questionCount].question;
+            io.to(roomcode).emit("updateDisconnect", ({ remainingPlayers, username, begun, type, question }));
             io.to(roomcode).emit("playerMessage", `${player.username} disconnected`);
-            console.log("A Player Disconnected");
         }
 
         // Checking Quiz App host
@@ -93,41 +97,39 @@ io.on("connection", socket => {
 
     // FOR THE QUIZ
     // When a player joins
-    socket.on("playerJoin", ({ code, username, idleImage, excitedImage }) => {
-        // Player Part
-        console.log("Player Joining");
-        const player = newPlayer(socket.id, code, username, idleImage, excitedImage);
-        socket.emit("playerMessage", player);
-        socket.join(player.roomcode);
+    socket.on("playerJoin", ({ code, username, idleImage, excitedImage, playerId }) => {
+        const reconnectionId = findPlayer({code, playerId});
+        if (!reconnectionId){
+            // Player Part
+            console.log(`${username} is joining`);
+            const player = newPlayer(socket.id, code, username, idleImage, excitedImage, playerId);
+            addPlayer({code, playerId});
+            socket.emit("playerMessage", player);
+            socket.join(player.roomcode);
 
-        // Host Part
-        const players = getRoomPlayers(code);
-        io.to(code).emit("hostMessage", players);
-        io.to(code).emit("roomPlayers", players);
+            // Host Part
+            const players = getRoomPlayers(code);
+            io.to(code).emit("roomPlayers", players);
+        } else {
+            console.log(`${username} is reconnecting`);
+            const player = newPlayer(socket.id, code, username, idleImage, excitedImage, playerId);
+            socket.emit("playerMessage", player);
+            socket.join(player.roomcode);
+
+            // Host Part
+            const players = getRoomPlayers(code);
+            const type = "reconnect";
+            const begun = getRooms().find(room => room.roomcode == code).begun;
+            const room = getRooms().find(room => room.roomcode == code);
+            const question = room.questions[room.questionCount].question;
+            io.to(code).emit("updateDisconnect", ({players, username, begun, type, question }));
+        }
     });
 
-    socket.on("reconnection", (player) => {
-        const players = reconnectPlayer(player);
-        socket.join(player.roomcode);
-        console.log(`Reconnecting ${player.username} to "${player.roomcode}"`)
-
-        const room = getRooms().find(room => room.roomcode == player.roomcode);
-        if (room) {
-            const question = room.questions[room.questionCount].question;
-            players.filter(player => player.roomcode == room.roomcode).forEach(player => {
-                player.votedBy = [];
-            })
-            console.log("Restarting the question for all")
-            resetAnswers();
-            io.to(player.roomcode).emit("nextQuestion", ({ question, players }));
-    }
-
-    })
 
     // For Checking availability of rooms
     socket.on("checkRooms", ({ code, isNewRoom, username }) => {
         const rooms = getRooms();
-        let isReconnection;
         let isTaken = rooms.some(room => room.roomcode == code);
         if (!isTaken && isNewRoom) {
             const questions = generateQuestions();
@@ -139,9 +141,6 @@ io.on("connection", socket => {
                 const usernameTaken = players.some(player => player.username == username);
                 if (!usernameTaken) {
                     const room = getRooms().find(room => room.roomcode == code);
-                    // Checking if it's a disconnected player
-                    isReconnection = searchDisconnectedPlayers(username);
-                    if (room.begun && isReconnection == undefined) {isTaken = false};
                 } else {
                     console.log(`"${username}" is already in use`);
                     isTaken = false;
@@ -150,7 +149,7 @@ io.on("connection", socket => {
             };
         };
         
-        socket.emit("roomCodeStatus", { code, isTaken, isReconnection });
+        socket.emit("roomCodeStatus", { code, isTaken });
     })
 
     // Starting the game
@@ -158,7 +157,6 @@ io.on("connection", socket => {
         console.log("Server Starting Game");
         const players = getRoomPlayers(roomcode);
         const room = getRooms().find(room => room.roomcode == roomcode);
-        console.log(room.questions)
         room.begun = true;
         const question = room.questions[0].question;
         room.questionCount += 1;
@@ -208,13 +206,13 @@ io.on("connection", socket => {
         
         // Setting Up Next Question
         const room = getRooms().find(room => room.roomcode == playerWin.roomcode);
-        if (room.questionCount != room.questions.length){
+        if (room.questionCount != room.maxQuestions){
             const question = room.questions[room.questionCount].question;
             room.questionCount += 1;
             io.to(playerWin.roomcode).emit("resultsTable", (players));
             setTimeout(() => {
                 io.to(playerWin.roomcode).emit("nextQuestion", {question, players});
-            }, (3000))
+            }, (3500))
         } else {
             console.log("Game is over")
             io.to(playerWin.roomcode).emit("displayResults", players);
@@ -231,13 +229,13 @@ io.on("connection", socket => {
         }, (300));
     })
 
-    socket.on("toggleSafMode", () => {
+    socket.on("toggleSafeMode", () => {
         const room = getRooms().find(room => room.id == socket.id);
         toggleHornyMode(room.roomcode);
-        console.log("Toggled Horny Mode")
-    })
+        console.log(`Toggled safe mode in room with code ${room.roomcode}`)
+    });
 });
 
-const PORT = 80;
+const PORT = 80;      // 80 for server launch, 3000 for local host
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

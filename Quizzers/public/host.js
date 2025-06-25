@@ -13,6 +13,7 @@ const results = document.getElementById("player-results");
 const navbar = document.querySelector("nav");
 const body = document.querySelector("body");
 const safeBtn = document.getElementById("safe-btn");
+const disconnectAlert = document.getElementById("disconnection-alert");
 
 let roomcode;
 
@@ -30,7 +31,7 @@ form.addEventListener("submit", e => {
     socket.emit("checkRooms", { code, isNewRoom, username });
 });
 
-socket.on("roomCodeStatus", ({ code, isTaken, isReconnection }) => {
+socket.on("roomCodeStatus", ({ code, isTaken }) => {
     if (isTaken) {
         console.log("Room code is taken pick another");
         warning.innerText = "Room code is taken please select another"
@@ -135,22 +136,27 @@ safeBtn.addEventListener("click", e => {
 
 function updatePlayerList(players) {
     // Showing online players
-    safeBtn.style.display = "block"
-    console.log("updated")
     playerList.innerHTML = '';
-    players.forEach((player) => {
-        const div = document.createElement('div');
-        div.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
-                        <p>${player.username}</p>`;
-        div.classList.add("awaiting-player");
-        playerList.appendChild(div);
-    });
+    let count = 0;
+    console.log(`players received : ${players}`)
+    if (players) {
+        players.forEach((player) => {
+            const div = document.createElement('div');
+            div.innerHTML = `<img class="awaiting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                            <p>${player.username}</p>`;
+            div.classList.add("awaiting-player");
+            playerList.appendChild(div);
+            count += 1;
+        });
+    }
 
     // Displaying start button
-    if (players.length > 0) {
+    if (count > 0) {
         startBtn.style.display = "block";
+        safeBtn.style.display = "block"
     } else {
         startBtn.style.display = "none";
+        safeBtn.style.display = "none"
     }
 }
 
@@ -188,17 +194,38 @@ function displayQuestion(question, players) {
     })
 }
 
-socket.on("updateDisconnect", (players) => {
-    playerCourt.innerHTML = "";
-    players.forEach((player) => {
-        const divElement = document.createElement("div")
-        divElement.innerHTML = `<img class="voting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
-                                <p class="player-name">${player.username}</p>
-                                <div class="votes">
-                                </div>`;
-        divElement.classList.add("player-icon");
-        playerCourt.appendChild(divElement);
-    })
+socket.on("updateDisconnect", ({ players, username, begun, type, question }) => {
+    if (begun){
+        // Resetting Question
+        playerCourt.innerHTML = "";
+        if (players){
+            players.forEach((player) => {
+                const divElement = document.createElement("div")
+                divElement.innerHTML = `<img class="voting-icon player-skull" data-player="${player.username}" src="Assets/${player.icon}"/>
+                                        <p class="player-name">${player.username}</p>
+                                        <div class="votes">
+                                        </div>`;
+                divElement.classList.add("player-icon");
+                playerCourt.appendChild(divElement);
+            })
+        }
+    } else {
+        console.log(`Players sent to updatePlayerList : ${players}`);
+        console.log(players);
+        updatePlayerList(players);
+    };
+
+    // Disconnect alert
+    if (type == "disconnect"){
+        disconnectAlert.innerText = `${username} disconnected`;
+    } else {
+        disconnectAlert.innerText = `${username} reconnected`;
+    }
+    disconnectAlert.style.display = "block";
+    setTimeout(() => {
+        disconnectAlert.innerText = "";
+        disconnectAlert.style.display = "none";
+    }, (2000))
 })
 
 socket.on("displayResults", (players) => {
