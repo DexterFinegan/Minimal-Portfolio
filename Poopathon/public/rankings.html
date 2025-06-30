@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
         <title>Poopathon!</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="styles_v2.css">
     </head>
 
     <body>
@@ -12,25 +12,28 @@
             <h1>Rankings</h1>
             <p>In this page we have a set of different group rankings and graphs for you to peruse!</p>
             <h2>Leaderboard Graph</h2>
-            <img style="width:80%" src="Assets/graph2.png"/>
+            <img style="width:80%; height:auto;" src="Assets/Specific poop graph.png"/>
             <p>This graph shows the movement of contestants over the course of the last month and how tight our bumholes are in this race</p>
-            <h2>Poopiest Days of the Month</h2>
-            <img style="width:70%" src="Assets/graph5.png"/>
-            <p>This graph shows groups number of poops over the course of May each day, clearly we had a strong beginning and a busy 30th probably
-                in preparation for this update. Nonetheless pretty normalised over the course of the month.
-            </p>
-            <h2>Easiest to Please</h2>
-            <img style="width:70%" src="Assets/graph3.png"/>
-            <p>This pie chart shows the total amount of likes/reactions sent by each user to any message or meme. Who is the easiest to please
-                with your content? Does this devalue their liking? Does the reverse happen for those that have liked less things?
-            </p>
-            <h2>Most Supportive Pooper</h2>
-            <img style="width:70%" src="Assets/graph4.png"/>
-            <p>On the flip-side, when focusing these likes solely on messages that contain an update we may consider these likes as supportive
-                poop likes, to help you through the process.
-            </p>
-            <h2>Shortest Times Between Poops</h2>
-            <ol>
+            <h2>Pie Charts!!!</h2>
+            <div id="pie-chart-container">
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/Biggest Content Sharer.png"/>
+                    <p class="pie-chart-desc">This pie chart shows the people that share the most amount of reels, photos and videos to the group chart
+                        for our entertainment - my part is usually during the updates.
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/Most Popular Reels Sender.png"/>
+                    <p class="pie-chart-desc">This pie chart shows how much people have received interaction from reels they've sent
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/Number of likes per share.png"/>
+                    <p class="pie-chart-desc">This pie chart shows the average amount of interaction each user gets per content share, less than I expected.
+                    </p>
+                </div>
+            </div>
+            <ol class="times">
                 <li>Seán - 4mins 36s</li>
                 <li>Clay - 5mins 56s</li>
                 <li>Dex - 6mins 34s</li>
@@ -51,8 +54,7 @@
                 <li>Georgia - 1hr 26mins 12s</li>
                 <li>Emma Sherlock - 7hrs 2mins 49s</li>
             </ol>
-            <h2>Longest Time Between Poops</h2>
-            <ol>
+            <ol class="times">
                 <li>Stephen - 1day 23hrs 2mins 12s</li>
                 <li>Shane - 2days 3hrs 40mins 46s</li>
                 <li>Eoin - 2days 10hrs 51mins 54s</li>
@@ -74,6 +76,35 @@
                 <li>Soumia - 7days 21hrs 19mins 15s</li>
                 
             </ol>
+
+            <h2>Most Interacted with Shares</h2>
+            <div id="pie-chart-container">
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/link1.png"/>
+                    <p class="pie-chart-desc">9 likes
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/link2.png"/>
+                    <p class="pie-chart-desc">8 likes
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/link3.png"/>
+                    <p class="pie-chart-desc">8 likes
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/photo1.png"/>
+                    <p class="pie-chart-desc">9 likes, love it
+                    </p>
+                </div>
+                <div class="pie-chart-holder">
+                    <img class="pie-chart-img" src="Assets/photo2.png"/>
+                    <p class="pie-chart-desc">8 likes, I'm sure there was a caption
+                    </p>
+                </div>
+            </div>
             <div class="return"><a href="index.html">Return to homepage</a></div>
         </div>
     </body>
