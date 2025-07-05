@@ -1,0 +1,26 @@
+List of all the website related things I wish to implement for the poopathon
+
+- Interpersonal Relationships Tab
+    Displaying the proportion at which each person interacts with each other person in the gc in a polar node fashion
+
+- Medals for Users
+    Medals may include "Most likes Sent", "Most Poop Likes Sent", "Most Content Shared", "Most Poops Done", "Least Poops Done"
+                        "Longest Time between Poops", "Shortest Time Between Poops", "Most consistent Pooper", "Least Consistent Pooper"
+                        "Most Likes Received", "Funniest Content" by the last month
+
+- Have an automatic Assets Transfer System, from the python poop files to the website files
+
+- Have more game options
+
+- Have a highscore card for the game of previous players, rejig the look of the quiz
+
+- Clean up UI to be in percentages to fit screen size differences
+
+- Clean up Other leaderboards
+
+- Have video implementation for the dynamic barchart
+
+- Have a graveyard section
+
+- Autoincorporate the previous months for personal highs, personal lows, leaderboard changes and rankings
+

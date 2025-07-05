@@ -1,53 +1,206 @@
+/* 
+Background	        #1E1E2F	Deep navy charcoal (very easy on eyes)
+Surface Panels	    #2C2C3A	Slightly lighter grey for cards/sections
+Primary Accent	    #4DD0E1	Cool cyan for highlights & links
+Secondary Accent	#6C63FF	Soft violet-blue for contrast buttons
+Text Primary	    #E0E0E0	Light grey text
+Text Muted	        #A0A0B0	Muted grey for secondary info
+Borders/Lines	    #3A3A4A	Subtle separators
+Success / Accent	#81C784	Soft green for positive states
+Error / Warning	    #E57373	Gentle red for errors
+*/
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(231, 243, 247);
+    background-color: #1E1E2F;
+    color: #E0E0E0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin: 0px;
+}
+
+/* Navbar Title */
+nav {
+    background-color: #2C2C3A;
+    border-bottom: solid 3px #4DD0E1;
+}
+
+#nav-title {
+    color: #E0E0E0;
+    font-size: 3rem;
+    margin: 20px 60px 20px 20px;
+    display: inline;
+}
+
+.nav-btn {
+    background-color: #1E1E2F;
+    margin: 0px 20px 0px 0px;
+    font: inherit;
+    font-size: 1.5rem;
+    border: none;
+    padding: 10px;
+    color: #E0E0E0;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background-color: #2C2C3A;
+}
+
+/* Introduction */
+#top-container {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 40px;
+    justify-content: space-around;
+}
+
+#introduction-container {
+    padding: 20px;
+    background-color: #2C2C3A;
+    width: 60%;
+    height: auto;
+    border-radius: 20px;
+}
+
+#languages-container {
+    padding: 20px;
+    background-color: #2C2C3A;
+    width: 20%;
+    border-radius: 15px;
+}
+
+#all-languages {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
 }
 
 h1 {
-    text-align: center;
-    font-size: 3.5rem;
-    background: linear-gradient(90deg, rgb(231, 243, 247), rgb(213, 251, 187), rgb(231, 243, 247));
-    padding: 0.5rem;
+    margin: 0px 0px 10px 0px;
 }
 
-#game-container .game {
-    margin: 1.5rem 0.5rem;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.5rem;
-    width: 25%;
-    min-width: 150px;
-    border: 5px rgb(116, 116, 252) dashed;
-    border-radius: 30px;
-    padding: 30px;
-    background: white;
-    color: rgb(76, 74, 74);
-    transition-duration: 0.3s;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 40%);
+h2 {
+    margin: 0px 0px 0px 20px;
 }
 
-#game-container .game:hover{
-    transform: scale(1.05);
-    box-shadow: 8px 8px 15px rgba(0, 0, 0, 50%);
+ul {
+    padding: 0px;
+    width: 20%;
+}
+
+hr {
+    width: 70%;
+    margin: 40px auto 20px auto;
+}
+
+/* Projects */
+#projects-container {
+    width: 90%;
+    margin: 20px auto 0px auto;
+    padding: 10px;
+}
+
+#projects-paragraph {
+    color: #A0A0B0;
+    width: 60%;
 }
 
 #game-container {
+    width: 100%;
+    padding: 30px;
     display: flex;
     flex-flow: row wrap;
-    width: 70vw;
     justify-content: space-around;
-    margin: auto;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.game-holder {
+    width: 45%;
+    background-color: #2C2C3A;
+    border: solid 3px #4DD0E1;
+    border-radius: 20px;
+    margin-bottom: 30px;
 }
 
-a:hover {
-    color: black;
+.game-img {
+    width: 80%;
+    height: 230px;
+    margin: 10px 10% 10px 10%;
+    border: solid 3px #6C63FF;
+    border-radius: 10px;
 }
 
-a:active {
-    color: rgb(231, 63, 63);
+.game-description {
+    color: #A0A0B0;
+    width: 90%;
+    margin: 10px auto 30px auto;
+}
+
+/* Contact */
+#contact-container {
+    width: 70%;
+    margin: 40px auto 70px auto;
+}
+
+/* Mobile Devices */
+@media (max-width: 700px) {
+    #nav-title {
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .nav-btn {
+        font-size: 0.7rem;
+        margin-right: 5px;
+    }
+
+    h1 {
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 0.7rem;
+        margin-left: 10px;
+    }
+
+    article {
+        font-size: 0.5rem;
+    }
+
+    #introduction-container {
+        width: 50%;
+        padding: 10px;
+    }
+
+    #languages-container {
+        width: 20%;
+        padding: 15px;
+    }
+
+    li {
+        font-size: 0.5rem;
+    }
+
+    #projects-container {
+        width: 100%;
+        padding: 0px;
+    }
+
+    #game-container {
+        padding: 5px;
+    }
+
+    .game-holder {
+        margin-bottom: 10px;
+    }
+
+    .game-img {
+        height: 100px;
+    }
+
+    p {
+        font-size: 0.4rem;
+    }
+
+    hr {
+        margin: 20px auto 10px auto;
+    }
 }

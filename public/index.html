@@ -3,19 +3,111 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
-        <title>Games by Dexter</title>
+        <title>Dexter Finegan Dot Com</title>
         <link rel="stylesheet" href="styles.css">
     </head>
 
     <body>
-        <h1>Games by Dexter</h1>
-        <div id="game-container">
-            <div class="game"><a href="/snake">Snake</a></div>
-            <div class="game"><a href="/shooter">Shooter</a></div>
-            <div class="game"><a href="/slots">Slots</a></div>
-            <div class="game"><a href="/chat">Live Chat Room</a></div>
-            <div class="game"><a href="/poop">Poopathon</a></div>
-            <div class="game"><a href="/quiz">Closeted Skeletons</a></div>
+        <nav>
+            <h1 id="nav-title">Dexter</h1>
+            <button class="nav-btn" id="about-btn">About</button>
+            <button class="nav-btn" id="projects-btn">Projects</button>
+            <button class="nav-btn" id="contact-btn">Contact</button>
+        </nav>
+        <div id="top-container">
+            <div id="introduction-container">
+                <h1>What is this?</h1>
+                <article>My name is Dexter Finegan, a self taught programmer college dropout. I enjoy learning and making projects that 
+                    challenge me. This is a location that can share some of these endeavours. I am not the most skilled programmer but my 
+                    opinion is that to finish something even if it's not perfect, so here we are!
+                </article>
+            </div>
+            <div id="languages-container">
+                <h2>Languages</h2>
+                <div id="all-languages">
+                    <ul>
+                        <li>Python</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                    </ul>
+                    <ul>
+                        <li>Javascript</li>
+                        <li>R</li>
+                        <li>Node.js</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
+        <hr>
+
+        <div id="projects-container">
+            <h1>Projects</h1>
+            <article id="projects-paragraph">Here lies all my projects that have been developed for website use, they were on my
+                learning journey so some are from early stages and are rather rudimentary.
+            </article>
+            <div id="game-container">
+                <div class="game-holder">
+                    <a href="/quiz">
+                        <img src="Assets/skeletons.png" class="game-img"/>
+                    </a>
+                    <h2>Closeted Skeletons</h2>
+                    <p class="game-description">A Jackbox-like game involving a room host and several players
+                        that vote on who is the answer to a provided prompt. Click the Image to play!
+                    </p>
+                </div>
+                <div class="game-holder">
+                    <a href="/poop">
+                        <img src="Assets/poop.png" class="game-img"/>
+                    </a>
+                    <h2>Poopathon</h2>
+                    <p class="game-description">An on going monthly update on a groupchat of me and my friends wherein
+                        we track our poops throughout the year. I find the stats separately using python and display
+                        them at the end of each month for them to see and compare. Click the image to view!
+                    </p>
+                </div>
+                <div class="game-holder">
+                    <a href="/chat">
+                        <img src="Assets/chat-room.png" class="game-img"/>
+                    </a>
+                    <h2>Chat Room</h2>
+                    <p class="game-description">A tutorial I followed on how to use a node.js server to implement
+                        client-server relations in the form of a chat room application. Click the image to view!
+                    </p>
+                </div>
+                <div class="game-holder">
+                    <a href="/slots">
+                        <img src="Assets/slots.png" class="game-img"/>
+                    </a>
+                    <h2>Slot Machine</h2>
+                    <p class="game-description">My first solo javascript application to make a fake gambling site 
+                        wherein a user can gamble dabloons on the slot machine and win big if they're lucky! Click the Image to play!
+                    </p>
+                </div>
+                <div class="game-holder">
+                    <a href="/Shooter">
+                        <img src="Assets/shooter.png" class="game-img"/>
+                    </a>
+                    <h2>Shooter</h2>
+                    <p class="game-description">A second tutorial used to learn javascript, a simple shooter game. Click the Image to play!</p>
+                </div>
+                <div class="game-holder">
+                    <a href="/snake">
+                        <img src="Assets/snake.png" class="game-img"/>
+                    </a>
+                    <h2>Snake</h2>
+                    <p class="game-description">The first Javascript game I made using a tutorial, click the Image to play!</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div id="contact-container">
+            <h1>Contact Me</h1>
+            <p>My Email : dexter.finegan@gmail.com</p>
+        </div>
+
+        <script src="script.js"></script>
     </body>
 </html>
