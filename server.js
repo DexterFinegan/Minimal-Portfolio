@@ -1,18 +1,20 @@
 const path = require("path");
-const http = require("http");
-const express = require("express");
 const socketio = require("socket.io");
-
-// Chat Room Imports
-const formatMessage = require("./Chat Room/utils/messages");
-const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users");
-
-// Quiz Game Imports
-const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode, addPlayer, findPlayer } = require("./Quizzers/utils/roomv2");
-const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/playerv2");
-
+const https = require("https");
+const fs = require("fs");
+const express = require("express");
 const app = express();
-const server = http.createServer(app);
+
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/dexterfinegan.com/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/dexterfinegan.com/fullchain.pem")
+};
+
+const PORT = 443 // For https server 
+const server = https.createServer(options, app).listen(PORT, () => {
+  console.log("HTTPS server running on port 443");
+});
+
 const io = socketio(server);
 
 // Set static folder
@@ -26,6 +28,14 @@ app.use("/snake", express.static(path.join(__dirname, "Snake/public")));
 app.use("/quiz", express.static(path.join(__dirname, "Quizzers/public")));
 
 const botName = "Chat Bot";
+
+// Chat Room Imports
+const formatMessage = require("./Chat Room/utils/messages");
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./Chat Room/utils/users");
+
+// Quiz Game Imports
+const { newRoom, getRooms, roomLeave, generateQuestions, addAnswer, resetAnswers, toggleHornyMode, addPlayer, findPlayer } = require("./Quizzers/utils/roomv2");
+const { newPlayer, getRoomPlayers, playerLeave, removeAllPlayers, votedByPlayer, getPlayerByUsername, getPlayerbyId } = require("./Quizzers/utils/playerv2");
 
 // Run when a client connects
 io.on("connection", socket => {
@@ -235,7 +245,3 @@ io.on("connection", socket => {
         console.log(`Toggled safe mode in room with code ${room.roomcode}`)
     });
 });
-
-const PORT = 80;      // 80 for server launch, 3000 for local host
-
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
